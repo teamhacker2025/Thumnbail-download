@@ -15,14 +15,12 @@
             --text-main: #ffffff;
             --text-dim: #888;
         }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Inter', sans-serif;
         }
-
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
@@ -31,10 +29,7 @@
             flex-direction: column;
             align-items: center;
             padding: 20px;
-            transition: all 0.3s ease;
         }
-
-        /* Header / Navbar */
         nav {
             width: 100%;
             max-width: 1000px;
@@ -43,7 +38,6 @@
             align-items: center;
             padding: 20px 0 40px 0;
         }
-
         .logo {
             display: flex;
             align-items: center;
@@ -51,7 +45,6 @@
             font-weight: 700;
             font-size: 1.4rem;
         }
-
         .logo-icon {
             width: 32px;
             height: 32px;
@@ -61,7 +54,6 @@
             align-items: center;
             justify-content: center;
         }
-
         .nav-links {
             display: flex;
             gap: 25px;
@@ -69,15 +61,12 @@
             font-size: 0.9rem;
             color: var(--text-dim);
         }
-
         .nav-links a {
             text-decoration: none;
             color: inherit;
             transition: 0.3s;
         }
-
         .nav-links a:hover { color: #fff; }
-
         .pro-badge {
             border: 1px solid #ff00cc;
             color: #ff00cc;
@@ -86,13 +75,10 @@
             font-size: 0.8rem;
             font-weight: 600;
         }
-
-        /* Hero Section */
         .hero {
             text-align: center;
             margin-bottom: 40px;
         }
-
         .feature-tag {
             background: rgba(255, 255, 255, 0.05);
             padding: 6px 15px;
@@ -105,28 +91,23 @@
             gap: 8px;
             margin-bottom: 20px;
         }
-
         h1 {
             font-size: clamp(2rem, 8vw, 3.5rem);
             font-weight: 800;
             line-height: 1.1;
             margin-bottom: 15px;
         }
-
         .gradient-text {
             background: var(--accent-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-
         .hero p {
             color: var(--text-dim);
             max-width: 500px;
             margin: 0 auto;
             line-height: 1.6;
         }
-
-        /* Main Card Layout */
         .card {
             width: 100%;
             max-width: 700px;
@@ -136,7 +117,6 @@
             padding: 30px;
             margin-bottom: 20px;
         }
-
         .label {
             font-size: 0.7rem;
             font-weight: 700;
@@ -145,19 +125,16 @@
             margin-bottom: 15px;
             display: block;
         }
-
         .input-wrapper {
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
         }
-
         .input-container {
             flex: 1;
             position: relative;
             min-width: 250px;
         }
-
         input {
             width: 100%;
             background: rgba(255,255,255,0.03);
@@ -168,7 +145,6 @@
             outline: none;
             font-size: 0.95rem;
         }
-
         .link-icon {
             position: absolute;
             left: 15px;
@@ -176,7 +152,6 @@
             transform: translateY(-50%);
             opacity: 0.4;
         }
-
         .btn-extract {
             background: var(--btn-gradient);
             color: #fff;
@@ -192,24 +167,19 @@
             transition: 0.3s;
             box-shadow: 0 10px 20px rgba(233, 30, 99, 0.2);
         }
-
         .btn-extract:hover {
             transform: translateY(-2px);
             filter: brightness(1.1);
         }
-
-        /* Result Section */
         #resultArea {
             display: none;
             text-align: center;
             animation: slideUp 0.5s ease-out;
         }
-
         @keyframes slideUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         .thumb-container {
             width: 100%;
             border-radius: 15px;
@@ -217,12 +187,10 @@
             border: 1px solid var(--border-color);
             margin-bottom: 20px;
         }
-
         .thumb-container img {
             width: 100%;
             display: block;
         }
-
         .btn-save {
             width: 100%;
             background: rgba(255,255,255,0.05);
@@ -236,13 +204,10 @@
             cursor: pointer;
             transition: 0.3s;
         }
-
         .btn-save:hover {
             background: rgba(255,255,255,0.1);
             border-color: #e91e63;
         }
-
-        /* Admin Panel Styles */
         .admin-login-overlay, .admin-panel-overlay {
             position: fixed;
             top: 0;
@@ -322,8 +287,6 @@
     </style>
 </head>
 <body>
-
-    <!-- Ad spaces: Top, Bottom, Side (Left/Right) -->
     <div id="topAdSpace" style="width:100%; text-align:center; margin-bottom:10px;"></div>
     <div style="display:flex; gap:15px; max-width:1200px; width:100%; justify-content:center;">
         <div id="leftAdSpace" style="width:160px; min-width:120px;"></div>
@@ -374,16 +337,9 @@
     <div id="bottomAdSpace" style="width:100%; text-align:center; margin-top:20px;"></div>
 
     <script>
-        // ======================= ADMIN PANEL SYSTEM =======================
-        // Store customizations in localStorage
         let adminSettings = {
-            topAdCode: '',
-            bottomAdCode: '',
-            leftAdCode: '',
-            rightAdCode: '',
-            customCSS: '',
-            customHeaderHTML: '',
-            customFooterHTML: ''
+            topAdCode: '', bottomAdCode: '', leftAdCode: '', rightAdCode: '',
+            customCSS: '', customHeaderHTML: '', customFooterHTML: ''
         };
 
         function loadSettings() {
@@ -441,8 +397,8 @@
             alert('Settings saved! Page updated.');
         }
 
-        // Admin login & panel UI
         let adminLoggedIn = false;
+        
         function showAdminLogin() {
             const overlay = document.createElement('div');
             overlay.id = 'adminLoginOverlay';
@@ -525,7 +481,7 @@
                         <button class="admin-btn close-admin" onclick="closeAdminPanel()">❌ Close Panel</button>
                         <button class="admin-btn close-admin" onclick="logoutAdmin()">🚪 Logout</button>
                     </div>
-                    <p style="font-size:12px; color:#666; margin-top:15px;">Changes save instantly to localStorage. No core file modification needed.</p>
+                    <p style="font-size:12px; color:#666; margin-top:15px;">Changes save instantly to localStorage.</p>
                 </div>
             `;
             document.body.appendChild(panelDiv);
@@ -538,8 +494,6 @@
                 if(m === '<') return '&lt;';
                 if(m === '>') return '&gt;';
                 return m;
-            }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-                return c;
             });
         }
 
@@ -552,7 +506,6 @@
             adminSettings.customHeaderHTML = document.getElementById('adminCustomHeaderHtml').value;
             adminSettings.customFooterHTML = document.getElementById('adminCustomFooterHtml').value;
             saveSettings();
-            alert('All changes applied! Refresh view updated.');
         };
 
         window.closeAdminPanel = function() {
@@ -566,7 +519,6 @@
             alert('Logged out from admin panel.');
         };
 
-        // Check for /admin route in URL (hash or path)
         function checkAdminRoute() {
             const path = window.location.pathname;
             const hash = window.location.hash;
@@ -576,7 +528,6 @@
                 } else {
                     showAdminPanel();
                 }
-                // Clean URL without reloading infinitely
                 if(window.history && window.history.replaceState) {
                     const cleanUrl = window.location.origin + window.location.pathname;
                     window.history.replaceState({}, document.title, cleanUrl);
@@ -584,13 +535,11 @@
             }
         }
 
-        // Also handle any link click or manual /admin typing
         window.addEventListener('load', () => {
             loadSettings();
             checkAdminRoute();
         });
 
-        // Listen for hash changes to support /admin
         window.addEventListener('hashchange', () => {
             if(window.location.hash.includes('/admin')) {
                 if(!adminLoggedIn) showAdminLogin();
@@ -599,7 +548,6 @@
             }
         });
 
-        // Thumbnail Core Functions
         function extractVideoID(url) {
             const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
             const match = url.match(regExp);
@@ -638,13 +586,6 @@
                 generateThumbnail();
             }
         });
-
-        // Expose global for manual admin trigger (optional)
-        window.triggerAdmin = function() { 
-            if(!adminLoggedIn) showAdminLogin(); 
-            else showAdminPanel();
-        };
-        console.log('✅ Admin panel ready. Visit /admin or #/admin to access. Credentials: Ashish@2007 / Ashish@2025');
     </script>
 </body>
 </html>
