@@ -4,104 +4,153 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thumbnail Pro - YouTube Thumbnail Downloader</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-color: #050505;
-            --card-bg: #0f0f0f;
-            --border-color: #222;
-            --accent-gradient: linear-gradient(90deg, #9d50bb 0%, #ff00cc 100%);
-            --btn-gradient: linear-gradient(135deg, #e91e63 0%, #880e4f 100%);
-            --text-main: #ffffff;
-            --text-dim: #888;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, 'Inter', sans-serif;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
+            background: #050505;
+            color: white;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 20px;
         }
-        nav { width: 100%; max-width: 1000px; display: flex; justify-content: space-between; align-items: center; padding: 20px 0 40px 0; }
-        .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.4rem; }
-        .logo-icon { width: 32px; height: 32px; background: var(--accent-gradient); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
-        .nav-links { display: flex; gap: 25px; align-items: center; font-size: 0.9rem; color: var(--text-dim); }
-        .nav-links a { text-decoration: none; color: inherit; transition: 0.3s; }
-        .nav-links a:hover { color: #fff; }
-        .pro-badge { border: 1px solid #ff00cc; color: #ff00cc; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
-        .hero { text-align: center; margin-bottom: 40px; }
-        .feature-tag { background: rgba(255,255,255,0.05); padding: 6px 15px; border-radius: 20px; font-size: 0.75rem; color: var(--text-dim); border: 1px solid var(--border-color); display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; }
-        h1 { font-size: clamp(2rem, 8vw, 3.5rem); font-weight: 800; line-height: 1.1; margin-bottom: 15px; }
-        .gradient-text { background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .hero p { color: var(--text-dim); max-width: 500px; margin: 0 auto; line-height: 1.6; }
-        .card { width: 100%; max-width: 700px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 30px; margin-bottom: 20px; }
-        .label { font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; color: var(--text-dim); margin-bottom: 15px; display: block; }
-        .input-wrapper { display: flex; gap: 15px; flex-wrap: wrap; }
-        .input-container { flex: 1; position: relative; min-width: 250px; }
-        input { width: 100%; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); padding: 16px 20px 16px 45px; border-radius: 12px; color: #fff; outline: none; font-size: 0.95rem; }
-        .link-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); opacity: 0.4; }
-        .btn-extract { background: var(--btn-gradient); color: #fff; border: none; padding: 0 30px; height: 54px; border-radius: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: 0.3s; box-shadow: 0 10px 20px rgba(233, 30, 99, 0.2); }
-        .btn-extract:hover { transform: translateY(-2px); filter: brightness(1.1); }
-        #resultArea { display: none; text-align: center; animation: slideUp 0.5s ease-out; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .thumb-container { width: 100%; border-radius: 15px; overflow: hidden; border: 1px solid var(--border-color); margin-bottom: 20px; }
-        .thumb-container img { width: 100%; display: block; }
-        .btn-save { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); padding: 16px; border-radius: 12px; color: #e91e63; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.3s; }
-        .btn-save:hover { background: rgba(255,255,255,0.1); border-color: #e91e63; }
-        .admin-login-overlay, .admin-panel-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
-        .admin-login-box, .admin-panel-box { background: #0f0f0f; border: 1px solid #333; border-radius: 24px; padding: 30px; width: 90%; max-width: 500px; color: white; }
-        .admin-panel-box { max-width: 800px; max-height: 85vh; overflow-y: auto; }
-        .admin-input { background: #1a1a1a; border: 1px solid #333; padding: 12px; border-radius: 12px; color: white; width: 100%; margin: 10px 0; }
-        .admin-btn { background: linear-gradient(135deg, #e91e63, #880e4f); border: none; padding: 12px 24px; border-radius: 40px; color: white; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .close-admin { background: #222; margin-left: 10px; }
-        .ad-space { margin: 15px 0; padding: 10px; border: 1px dashed #e91e63; border-radius: 12px; background: rgba(233,30,99,0.05); }
-        textarea { width: 100%; background: #1a1a1a; border: 1px solid #333; color: white; padding: 12px; border-radius: 12px; font-family: monospace; }
-        .section-title { font-size: 1.2rem; margin: 20px 0 10px; color: #ff00cc; }
-        @media (max-width: 600px) { .nav-links { display: none; } .input-wrapper { flex-direction: column; } .btn-extract { width: 100%; justify-content: center; } }
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            font-size: 3rem;
+            margin: 20px 0;
+            background: linear-gradient(90deg, #9d50bb, #ff00cc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card {
+            background: #0f0f0f;
+            border: 1px solid #222;
+            border-radius: 24px;
+            padding: 30px;
+            margin: 20px 0;
+        }
+        input {
+            width: 100%;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            padding: 15px;
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+        }
+        button {
+            background: linear-gradient(135deg, #e91e63, #880e4f);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        img {
+            max-width: 100%;
+            border-radius: 12px;
+            margin: 15px 0;
+        }
+        .hidden {
+            display: none;
+        }
+        .admin-link {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            font-size: 11px;
+            color: #333;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
-    <div id="topAdSpace" style="width:100%; text-align:center; margin-bottom:10px;"></div>
-    <div style="display:flex; gap:15px; max-width:1200px; width:100%; justify-content:center;">
-        <div id="leftAdSpace" style="width:160px; min-width:120px;"></div>
-        <div style="flex:1; max-width:800px;">
-            <nav>
-                <div class="logo"><div class="logo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M23 12l-2.44-2.78.34-3.68-3.61-.82-1.89-3.18L12 3 8.6 1.54 6.71 4.72l-3.61.81.34 3.68L1 12l2.44 2.78-.34 3.69 3.61.82 1.89 3.18L12 21l3.4 1.46 1.89-3.18 3.61-.82-.34-3.68L23 12zm-13 5l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg></div>Thumbnail <span style="color: #ff00cc; font-weight: 400;">Pro</span></div>
-                <div class="nav-links"><a href="#">How it works</a><a href="#">API</a><span class="pro-badge">v2.0 PRO</span></div>
-            </nav>
-            <div class="hero"><div class="feature-tag"><span style="color: #ff00cc;">✦</span> Premium YouTube Extraction Tool</div><h1>Download Content<br><span class="gradient-text">Like a Pro</span></h1><p>Get 4K & HD thumbnails instantly. No ads, no compression, just pure pixels.</p></div>
-            <div class="card"><span class="label">VIDEO SOURCE</span><div class="input-wrapper"><div class="input-container"><svg class="link-icon" width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg><input type="text" id="videoUrl" placeholder="Paste YouTube URL (e.g. https://youtu.be/...)"></div><button class="btn-extract" onclick="generateThumbnail()"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>EXTRACT</button></div></div>
-            <div class="card" id="resultArea"><span class="label">EXTRACTED THUMBNAIL</span><div class="thumb-container"><img id="thumbPreview" src="" alt="Preview"></div><button class="btn-save" onclick="downloadImage()">Save HD Thumbnail</button></div>
+    <div class="container">
+        <h1>🎬 Thumbnail Pro</h1>
+        <p>Get 4K & HD YouTube thumbnails instantly</p>
+        
+        <div class="card">
+            <input type="text" id="videoUrl" placeholder="Paste YouTube URL here...">
+            <button onclick="getThumbnail()">Extract Thumbnail 🔍</button>
         </div>
-        <div id="rightAdSpace" style="width:160px; min-width:120px;"></div>
+        
+        <div class="card hidden" id="result">
+            <img id="thumbnail" src="" alt="Thumbnail">
+            <button onclick="downloadThumbnail()">Download HD ⬇️</button>
+        </div>
     </div>
-    <div id="bottomAdSpace" style="width:100%; text-align:center; margin-top:20px;"></div>
+    <a href="#" class="admin-link" onclick="checkAdmin()">🔒</a>
 
     <script>
-        let adminSettings = { topAdCode: '', bottomAdCode: '', leftAdCode: '', rightAdCode: '', customCSS: '', customHeaderHTML: '', customFooterHTML: '' };
-        function loadSettings() { const saved = localStorage.getItem('thumbnailProAdmin'); if(saved) { try { const parsed = JSON.parse(saved); adminSettings = {...adminSettings, ...parsed}; } catch(e) {} } applyAdSpaces(); applyCustomCSS(); applyCustomHeaderFooter(); }
-        function applyAdSpaces() { document.getElementById('topAdSpace').innerHTML = adminSettings.topAdCode || ''; document.getElementById('bottomAdSpace').innerHTML = adminSettings.bottomAdCode || ''; document.getElementById('leftAdSpace').innerHTML = adminSettings.leftAdCode || ''; document.getElementById('rightAdSpace').innerHTML = adminSettings.rightAdCode || ''; }
-        function applyCustomCSS() { let styleTag = document.getElementById('adminCustomStyle'); if(!styleTag) { styleTag = document.createElement('style'); styleTag.id = 'adminCustomStyle'; document.head.appendChild(styleTag); } styleTag.textContent = adminSettings.customCSS || ''; }
-        function applyCustomHeaderFooter() { let headerDiv = document.getElementById('adminCustomHeader'); if(!headerDiv) { headerDiv = document.createElement('div'); headerDiv.id = 'adminCustomHeader'; document.body.insertBefore(headerDiv, document.body.firstChild); } let footerDiv = document.getElementById('adminCustomFooter'); if(!footerDiv) { footerDiv = document.createElement('div'); footerDiv.id = 'adminCustomFooter'; document.body.appendChild(footerDiv); } headerDiv.innerHTML = adminSettings.customHeaderHTML || ''; footerDiv.innerHTML = adminSettings.customFooterHTML || ''; }
-        function saveSettings() { localStorage.setItem('thumbnailProAdmin', JSON.stringify(adminSettings)); applyAdSpaces(); applyCustomCSS(); applyCustomHeaderFooter(); alert('Settings saved!'); }
-        let adminLoggedIn = false;
-        function showAdminLogin() { const overlay = document.createElement('div'); overlay.id = 'adminLoginOverlay'; overlay.className = 'admin-login-overlay'; overlay.innerHTML = `<div class="admin-login-box"><h2 style="margin-bottom:20px;">🔐 Admin Access</h2><input type="text" id="adminUserId" class="admin-input" placeholder="Admin ID"><input type="password" id="adminPassword" class="admin-input" placeholder="Password"><button class="admin-btn" onclick="validateAdminLogin()">Login</button><button class="admin-btn close-admin" onclick="closeAdminLogin()">Cancel</button></div>`; document.body.appendChild(overlay); }
-        window.validateAdminLogin = function() { const uid = document.getElementById('adminUserId').value; const pwd = document.getElementById('adminPassword').value; if(uid === 'Ashish@2007' && pwd === 'Ashish@2025') { adminLoggedIn = true; closeAdminLogin(); showAdminPanel(); } else { alert('Invalid credentials!'); } };
-        function closeAdminLogin() { const el = document.getElementById('adminLoginOverlay'); if(el) el.remove(); }
-        function showAdminPanel() { const panelDiv = document.createElement('div'); panelDiv.id = 'adminPanelOverlay'; panelDiv.className = 'admin-panel-overlay'; panelDiv.innerHTML = `<div class="admin-panel-box"><h2>🛠️ Admin Control Panel</h2><div class="section-title">📢 Top Ad</div><div class="ad-space"><textarea id="adminTopAd" rows="3">${escapeHtml(adminSettings.topAdCode)}</textarea></div><div class="section-title">📢 Bottom Ad</div><div class="ad-space"><textarea id="adminBottomAd" rows="3">${escapeHtml(adminSettings.bottomAdCode)}</textarea></div><div class="section-title">⬅️ Left Ad</div><div class="ad-space"><textarea id="adminLeftAd" rows="3">${escapeHtml(adminSettings.leftAdCode)}</textarea></div><div class="section-title">➡️ Right Ad</div><div class="ad-space"><textarea id="adminRightAd" rows="3">${escapeHtml(adminSettings.rightAdCode)}</textarea></div><div class="section-title">🎨 Custom CSS</div><div class="ad-space"><textarea id="adminCustomCss" rows="4">${escapeHtml(adminSettings.customCSS)}</textarea></div><div class="section-title">🧩 Header HTML</div><div class="ad-space"><textarea id="adminCustomHeaderHtml" rows="3">${escapeHtml(adminSettings.customHeaderHTML)}</textarea></div><div class="section-title">🧩 Footer HTML</div><div class="ad-space"><textarea id="adminCustomFooterHtml" rows="3">${escapeHtml(adminSettings.customFooterHTML)}</textarea></div><div style="display:flex; gap:12px; margin-top:25px;"><button class="admin-btn" onclick="saveAdminChanges()">💾 Save</button><button class="admin-btn close-admin" onclick="closeAdminPanel()">Close</button><button class="admin-btn close-admin" onclick="logoutAdmin()">Logout</button></div></div>`; document.body.appendChild(panelDiv); }
-        function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m) { if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m; }); }
-        window.saveAdminChanges = function() { adminSettings.topAdCode = document.getElementById('adminTopAd').value; adminSettings.bottomAdCode = document.getElementById('adminBottomAd').value; adminSettings.leftAdCode = document.getElementById('adminLeftAd').value; adminSettings.rightAdCode = document.getElementById('adminRightAd').value; adminSettings.customCSS = document.getElementById('adminCustomCss').value; adminSettings.customHeaderHTML = document.getElementById('adminCustomHeaderHtml').value; adminSettings.customFooterHTML = document.getElementById('adminCustomFooterHtml').value; saveSettings(); };
-        window.closeAdminPanel = function() { const panel = document.getElementById('adminPanelOverlay'); if(panel) panel.remove(); };
-        window.logoutAdmin = function() { adminLoggedIn = false; closeAdminPanel(); alert('Logged out.'); };
-        function checkAdminRoute() { const path = window.location.pathname; if(path.includes('/admin')) { if(!adminLoggedIn) showAdminLogin(); else showAdminPanel(); if(window.history && window.history.replaceState) { window.history.replaceState({}, document.title, window.location.pathname); } } }
-        window.addEventListener('load', () => { loadSettings(); checkAdminRoute(); });
-        function extractVideoID(url) { const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/; const match = url.match(regExp); return (match && match[7].length == 11) ? match[7] : false; }
-        window.generateThumbnail = function() { const urlInput = document.getElementById('videoUrl').value; const videoId = extractVideoID(urlInput); const resultArea = document.getElementById('resultArea'); const thumbPreview = document.getElementById('thumbPreview'); if(videoId) { const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`; thumbPreview.src = thumbnailUrl; resultArea.style.display = 'block'; thumbPreview.onerror = function() { this.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`; this.onerror = null; }; setTimeout(() => { resultArea.scrollIntoView({ behavior: 'smooth' }); }, 100); } else { alert("Please enter a valid YouTube URL."); } };
-        window.downloadImage = function() { window.open(document.getElementById('thumbPreview').src, '_blank'); };
-        document.getElementById("videoUrl").addEventListener("keypress", function(event) { if(event.key === "Enter") { generateThumbnail(); } });
+        function getVideoId(url) {
+            const patterns = [
+                /(?:youtube\.com\/watch\?v=)([^&]+)/,
+                /(?:youtu\.be\/)([^?]+)/,
+                /(?:youtube\.com\/embed\/)([^/?]+)/
+            ];
+            for(let pattern of patterns) {
+                const match = url.match(pattern);
+                if(match) return match[1];
+            }
+            return null;
+        }
+
+        function getThumbnail() {
+            const url = document.getElementById('videoUrl').value;
+            const videoId = getVideoId(url);
+            
+            if(videoId) {
+                const img = document.getElementById('thumbnail');
+                img.src = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+                img.onerror = () => { img.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`; };
+                document.getElementById('result').classList.remove('hidden');
+            } else {
+                alert('Please enter a valid YouTube URL');
+            }
+        }
+
+        function downloadThumbnail() {
+            window.open(document.getElementById('thumbnail').src, '_blank');
+        }
+
+        // ADMIN PANEL - Type /admin in URL
+        if(window.location.pathname.includes('/admin') || window.location.hash.includes('admin')) {
+            const id = prompt('Admin ID:');
+            const pass = prompt('Password:');
+            if(id === 'Ashish@2007' && pass === 'Ashish@2025') {
+                localStorage.setItem('adminAds', prompt('Paste ad code for top banner:', ''));
+                alert('Admin panel activated! Ad code saved.');
+                location.href = location.pathname;
+            } else {
+                alert('Access Denied!');
+            }
+        }
+
+        function checkAdmin() {
+            if(window.location.pathname.includes('/admin')) return;
+            window.location.href = '/admin';
+        }
+
+        // Load saved ads
+        const savedAd = localStorage.getItem('adminAds');
+        if(savedAd && savedAd.trim()) {
+            const adDiv = document.createElement('div');
+            adDiv.innerHTML = savedAd;
+            adDiv.style.cssText = 'width:100%; text-align:center; margin:10px 0;';
+            document.body.insertBefore(adDiv, document.body.firstChild);
+        }
     </script>
 </body>
 </html>
